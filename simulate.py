@@ -1,4 +1,5 @@
 from math import pi
+import random as random
 import pybullet as p
 import pybullet_data
 import time
@@ -28,15 +29,15 @@ for i in range(1000):
     bodyIndex = robotId,
     jointName = b'Torso_BackLeg',
     controlMode = p.POSITION_CONTROL,
-    targetPosition = -pi/5.5,
-    maxForce = 500)
+    targetPosition = random.uniform(-pi/2.5, pi/2.5),   
+    maxForce = 100)
 
     pyrosim.Set_Motor_For_Joint(
     bodyIndex = robotId,
     jointName = b'Torso_FrontLeg',
     controlMode = p.POSITION_CONTROL,
-    targetPosition = pi/5.5,
-    maxForce = 500)
+    targetPosition = random.uniform(-pi/2.5, pi/2.5),
+    maxForce = 100)
     #print(i)
     
 #print(backLegSensorValues)
