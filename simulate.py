@@ -6,6 +6,10 @@ import time
 import pyrosim.pyrosim as pyrosim
 import numpy as np
 
+amplitude = pi/4
+frequency = 10
+phaseOffset = 0
+
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
@@ -20,9 +24,17 @@ pyrosim.Prepare_To_Simulate(robotId)
 backLegSensorValues = np.zeros(1000)
 frontLegSensorValues = np.zeros(1000)
 
-values = np.linspace(0, 2*pi, 1000)
+#values = np.linspace(0, 2*pi, 1000)
+'''
 targetAngles = np.sin(values)
 targetAngles = targetAngles * (pi/4) 
+'''
+targetAngles = np.zeros(1000)
+for i in range (1000):
+    targetAngles[i] = amplitude * np.sin(frequency * 2*pi*i/1000 + phaseOffset)
+'''
+np.save("data/SinusoidallyVaryingVals.npy", targetAngles)
+exit() '''
 
 for i in range(1000):
     time.sleep(1/60)
