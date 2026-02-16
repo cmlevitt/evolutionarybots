@@ -58,7 +58,8 @@ for i in range(1000):
         #print(i)
 
 #print(backLegSensorValues)
-np.save("data/backLegSensorValues.npy", backLegSensorValues)
-np.save("data/frontLegSensorValues.npy", frontLegSensorValues)
-np.save("data/SinusoidallyVaryingVals.npy", targetAngles)
+#np.save("data/backLegSensorValues.npy", backLegSensorValues)
+#np.save("data/frontLegSensorValues.npy", frontLegSensorValues)
+np.save("data/SinusoidallyVaryingValsFront.npy", targetAngles)
+np.save("data/SinusoidallyVaryingValsBack.npy", targetAngles)
 p.disconnect()
