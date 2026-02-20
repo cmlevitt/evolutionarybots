@@ -6,7 +6,10 @@ import time
 import pyrosim.pyrosim as pyrosim
 import numpy as np
 import constants as c
+from simulation import SIMULATION
 
+simulation = SIMULATION()
+'''
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
@@ -22,10 +25,10 @@ backLegSensorValues = np.zeros(1000)
 frontLegSensorValues = np.zeros(1000)
 
 #values = np.linspace(0, 2*pi, 1000)
-'''
-targetAngles = np.sin(values)
-targetAngles = targetAngles * (pi/4) 
-'''
+
+#targetAngles = np.sin(values)
+#targetAngles = targetAngles * (pi/4) 
+
 targetAngles_bk = np.zeros(1000)
 for i in range (1000):
     targetAngles_bk[i] = c.amplitude_bk * np.sin(c.frequency_bk * 2*pi*i/1000 + c.phaseOffset_bk)
@@ -33,9 +36,9 @@ for i in range (1000):
 targetAngles_fr = np.zeros(1000)
 for i in range (1000):
     targetAngles_fr[i] = c.amplitude_fr * np.sin(c.frequency_fr * 2*pi*i/1000 + c.phaseOffset_fr)
-'''
-np.save("data/SinusoidallyVaryingVals.npy", targetAngles)
-exit() '''
+
+#np.save("data/SinusoidallyVaryingVals.npy", targetAngles)
+#exit() 
 
 for i in range(1000):
     time.sleep(1/60)
@@ -64,3 +67,4 @@ for i in range(1000):
 np.save("data/SinusoidallyVaryingValsFront.npy", targetAngles_fr)
 np.save("data/SinusoidallyVaryingValsBack.npy", targetAngles_bk)
 p.disconnect()
+'''
