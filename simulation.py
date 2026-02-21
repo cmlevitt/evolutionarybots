@@ -5,6 +5,7 @@ import pybullet_data
 import time
 import pyrosim.pyrosim as pyrosim
 
+
 class SIMULATION:
 
     def __init__(self):
@@ -17,12 +18,14 @@ class SIMULATION:
         self.world = WORLD()
         self.robot = ROBOT()
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
+        self.robot.Prepare_To_Sense()
         
 
     def Run(self):
         for i in range(1000):
             time.sleep(1/60)
             p.stepSimulation()
+            self.robot.Sense(i)
             '''
             backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
             frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
@@ -41,7 +44,9 @@ class SIMULATION:
                 targetPosition = targetAngles_fr[i],
                 maxForce = 100)
                 '''
-            print(i)
-    
+            #print(i)
+
+    def __del__(self): #destructor
+        p.disconnect()
             
                 ##step 27
