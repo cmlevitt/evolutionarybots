@@ -11,8 +11,9 @@ class SENSOR:
         #print(self.values)
 
     def Get_Value(self, i):
-        if i == 999:
-            print(self.values[i])
+        #if i == 999:
+            #print(self.values[i])
+            pass
 
     def Save_Values(self):
         np.save("data/" + self.linkName + "SensorValues.npy", self.values)
