@@ -22,7 +22,7 @@ def Generate_Body():
     pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[length, width, height])
     pyrosim.End()
 
-def Generate_Brain():
+def Create_Brain():
     pyrosim.Start_NeuralNetwork("brain.nndf")
     pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
     pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
@@ -43,4 +43,4 @@ def Generate_Brain():
 
 Create_World()
 Generate_Body()
-Generate_Brain()
+Create_Brain()
