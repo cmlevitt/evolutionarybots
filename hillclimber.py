@@ -13,6 +13,13 @@ class HILL_CLIMBER:
         self.Mutate()
         self.child.Evaluate()
         self.Select()
+        self.Print()
+
+    def Print(self):
+        print("*************************************************************************************************")
+        print("Parent's fitness: " + str(self.parent.fitness) + " Child's fitness: " + str(self.child.fitness))
+        print("*************************************************************************************************")
+
 
     def Spawn(self):
         self.child = copy.deepcopy(self.parent)
@@ -21,7 +28,9 @@ class HILL_CLIMBER:
         self.child.Mutate()
 
     def Select(self):
-        pass
+        if self.child.fitness < self.parent.fitness:
+            # more neg = better
+            self.parent = self.child
 
     def Evolve(self):
         self.parent.Evaluate()

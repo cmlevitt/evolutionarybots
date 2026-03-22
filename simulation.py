@@ -1,3 +1,4 @@
+
 from world import WORLD
 from robot import ROBOT
 import pybullet as p
@@ -8,9 +9,12 @@ import pyrosim.pyrosim as pyrosim
 
 class SIMULATION:
 
-    def __init__(self):
+    def __init__(self, directOrGUI):
 
-        physicsClient = p.connect(p.GUI)
+        if directOrGUI == "GUI":
+            physicsClient = p.connect(p.GUI)
+        else:
+            physicsClient = p.connect(p.DIRECT)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         #p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
         p.setGravity(0,0,-9.8,physicsClient)
@@ -31,6 +35,7 @@ class SIMULATION:
             self.robot.Act(i)
 
             time.sleep(1/60)
+        
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
