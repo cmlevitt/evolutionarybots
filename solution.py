@@ -1,7 +1,10 @@
+from time import time
+
 import numpy as np
 from pyrosim import pyrosim
 import random
 import os
+import time
 
 
 
@@ -18,9 +21,15 @@ class SOLUTION:
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
-        os.system("start /B python simulate.py " + directOrGUI )
-        f = open("fitness.txt")
-        self.fitness = float(f.read())
+
+        os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
+        fitnessFileName = "fitness" + str(self.myID) + ".txt"
+        while not os.path.exists(fitnessFileName):
+            time.sleep(0.01)
+
+        with open(f"fitness{self.myID}.txt") as f:
+            self.fitness = float(f.read())
+            print("fitness: " + str(self.fitness))
         f.close()
 
     def Mutate(self):
@@ -46,7 +55,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain" + str(self.myID) + ".nndf")
+        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = "FrontLeg")

@@ -21,7 +21,7 @@ def Generate_Body():
     pyrosim.Send_Joint(name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0.5,0,1.0])
     pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[length, width, height])
     pyrosim.End()
-
+'''
 def Create_Brain():
     pyrosim.Start_NeuralNetwork("brain.nndf")
     pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
@@ -40,7 +40,7 @@ def Create_Brain():
             pyrosim.Send_Synapse( sourceNeuronName = i, targetNeuronName = j, weight = random.uniform(-1,1) )
 
     pyrosim.End()
-
+'''
 Create_World()
 Generate_Body()
-Create_Brain()
+#Create_Brain()

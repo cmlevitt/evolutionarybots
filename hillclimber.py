@@ -6,7 +6,8 @@ import copy
 
 class HILL_CLIMBER:
     def __init__(self):
-        self.parent = solution.SOLUTION()
+        self.parent = solution.SOLUTION(self.nextAvailableID)
+        self.nextAvailableID += 1
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
