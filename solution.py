@@ -1,7 +1,7 @@
 import numpy as np
 from pyrosim import pyrosim
 import random
-import time
+import os
 
 
 
@@ -14,6 +14,7 @@ class SOLUTION:
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
+        os.system("python simulate.py")
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
