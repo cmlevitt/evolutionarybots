@@ -2,10 +2,12 @@ import hillclimber
 import solution
 import constants
 import copy
-
+import os
 
 class PARALELL_HILL_CLIMBER:
     def __init__(self):
+        os.system("del brain*" + ".nndf")
+        os.system("del fitness*" + ".txt")
         self.parents = {}
         self.nextAvailableID = 0
         for i in range(constants.populationSize):
@@ -14,12 +16,14 @@ class PARALELL_HILL_CLIMBER:
         #print("parents dict: " + str(self.parents))
 
     def Evolve_For_One_Generation(self):
+        pass
+        """
         self.Spawn()
         self.Mutate()
         self.child.Evaluate("DIRECT")
         self.Select()
         self.Print()
-
+"""
     def Show_Best(self):
         #self.parent.Evaluate("GUI")
         pass
@@ -49,8 +53,8 @@ class PARALELL_HILL_CLIMBER:
             self.parents[parent].Start_Simulation("DIRECT")
         for parent in self.parents:
             self.parents[parent].Wait_For_Simulation_To_End()
-            print("fitness: "+ str(self.parents[parent].fitness))
+            #print("fitness: "+ str(self.parents[parent].fitness))
         # self.parent.Evaluate("GUI")
-        #for currentGeneration in range(constants.numberOfGenerations):
-         #   self.Evolve_For_One_Generation()
+        for currentGeneration in range(constants.numberOfGenerations):
+            self.Evolve_For_One_Generation()
         
