@@ -51,20 +51,24 @@ class PARALELL_HILL_CLIMBER:
     def Mutate(self):
         for child in self.children.values():
             child.Mutate()
-            print("mutated")
 
     def Select(self):
         if self.child.fitness < self.parent.fitness:
             # more neg = better
             self.parent = self.child
 
+    def Evaluate(self, solutions):
+        for parent in solutions:
+            solutions[parent].Start_Simulation("DIRECT")
+        for parent in solutions:
+            solutions[parent].Wait_For_Simulation_To_End()
+
     def Evolve(self):
-        for parent in self.parents:
-            self.parents[parent].Start_Simulation("DIRECT")
-        for parent in self.parents:
-            self.parents[parent].Wait_For_Simulation_To_End()
+        self.Evaluate(self.parents)
+        exit()
+        
             #print("fitness: "+ str(self.parents[parent].fitness))
         # self.parent.Evaluate("GUI")
         for currentGeneration in range(constants.numberOfGenerations):
             self.Evolve_For_One_Generation()
-        
+
