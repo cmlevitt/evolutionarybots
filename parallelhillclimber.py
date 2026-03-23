@@ -16,10 +16,11 @@ class PARALELL_HILL_CLIMBER:
         #print("parents dict: " + str(self.parents))
 
     def Evolve_For_One_Generation(self):
-        pass
-        """
+
+
         self.Spawn()
         self.Mutate()
+    """
         self.child.Evaluate("DIRECT")
         self.Select()
         self.Print()
@@ -35,13 +36,22 @@ class PARALELL_HILL_CLIMBER:
 
 
     def Spawn(self):
-        self.child = copy.deepcopy(self.parent)
-        self.child.Set_ID(self.nextAvailableID)
-        self.nextAvailableID += 1
+        self.children = {}
+        id = 0
+        for key in self.parents:
+            child = str("child" + str(id))
+            child = copy.deepcopy(self.parents[key])
+            self.children[id] = child
+            id += 1
+        #self.child = copy.deepcopy(self.parent)
+        #self.child.Set_ID(self.nextAvailableID)
+        #self.nextAvailableID += 1
         #print("child's ID: " + str(self.child.myID))
 
     def Mutate(self):
-        self.child.Mutate()
+        for child in self.children.values():
+            child.Mutate()
+            print("mutated")
 
     def Select(self):
         if self.child.fitness < self.parent.fitness:
