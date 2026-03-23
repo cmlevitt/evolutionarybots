@@ -50,6 +50,6 @@ class ROBOT:
         xCoordinateOfLinkZero = positionOfLinkZero[0]
         with open("tmp" + str(self.myID) + ".txt", "w") as f:
             f.write(str(xCoordinateOfLinkZero))
-        os.rename("tmp"+str(self.myID)+".txt" , "fitness"+str(self.myID)+".txt")
+        os.replace("tmp"+str(self.myID)+".txt" , "fitness"+str(self.myID)+".txt")
 
         os.system("del brain" + str(self.myID) + ".nndf")
