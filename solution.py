@@ -28,9 +28,14 @@ class SOLUTION:
         while not os.path.exists(fitnessFileName):
             time.sleep(0.01)
 
-        with open(f"fitness{self.myID}.txt") as f:
-            self.fitness = float(f.read())
-        f.close()
+        while True:
+            try:
+                with open(fitnessFileName) as f:
+                    self.fitness = float(f.read())
+                break
+            except (PermissionError, ValueError):
+                time.sleep(0.01)
+
         os.system("del fitness" + str(self.myID) + ".txt")
 
     def Evaluate(self, directOrGUI):
