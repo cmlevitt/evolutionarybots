@@ -53,3 +53,4 @@ class ROBOT:
         os.replace("tmp"+str(self.myID)+".txt" , "fitness"+str(self.myID)+".txt")
 
         os.system("del brain" + str(self.myID) + ".nndf")
+        #print("Fitness check:", xCoordinateOfLinkZero)

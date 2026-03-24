@@ -20,8 +20,9 @@ class PARALELL_HILL_CLIMBER:
 
         self.Spawn()
         self.Mutate()
+        self.Evaluate(self.children)
+        exit()
     """
-        self.child.Evaluate("DIRECT")
         self.Select()
         self.Print()
 """
@@ -37,12 +38,9 @@ class PARALELL_HILL_CLIMBER:
 
     def Spawn(self):
         self.children = {}
-        id = 0
-        for key in self.parents:
-            child = str("child" + str(id))
-            child = copy.deepcopy(self.parents[key])
-            self.children[id] = child
-            id += 1
+        for id, key in enumerate(self.parents):
+            childkey = "child" + str(id)
+            self.children[childkey] = copy.deepcopy(self.parents[key])
         #self.child = copy.deepcopy(self.parent)
         #self.child.Set_ID(self.nextAvailableID)
         #self.nextAvailableID += 1
@@ -65,7 +63,7 @@ class PARALELL_HILL_CLIMBER:
 
     def Evolve(self):
         self.Evaluate(self.parents)
-        exit()
+        #exit()
         
             #print("fitness: "+ str(self.parents[parent].fitness))
         # self.parent.Evaluate("GUI")
