@@ -80,7 +80,7 @@ class SOLUTION:
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
 
-    def Generate_Brain(self):
+    def Generate_Brain(self): 
         pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
