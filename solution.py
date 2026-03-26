@@ -20,7 +20,7 @@ class SOLUTION:
 
     def Start_Simulation(self, directOrGUI):
         self.Create_World()
-        self.Create_Body()
+        self.Generate_Body()
         self.Generate_Brain()
         os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
 
@@ -41,8 +41,8 @@ class SOLUTION:
 
     def Evaluate(self, directOrGUI):
         self.Create_World()
-        self.Create_Body()
-        self.Create_Brain()
+        self.Generate_Body()
+        self.Generate_Brain()
 
         os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
@@ -66,16 +66,16 @@ class SOLUTION:
         while not os.path.exists("world.sdf"):
             time.sleep(0.01)
 
-    def Create_Body(self):
+    def Generate_Body(self):
         length = 1
         width = 1
         height = 1
         pyrosim.Start_URDF("body.urdf")
-        pyrosim.Send_Cube(name="Torso", pos=[0,0,1.5] , size=[length, width, height])
-        pyrosim.Send_Joint(name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [-0.5,0,1.0])
-        pyrosim.Send_Cube(name="BackLeg", pos=[-0.5,0,-0.5] , size=[length, width, height])
-        pyrosim.Send_Joint(name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0.5,0,1.0])
-        pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[length, width, height])
+        pyrosim.Send_Cube(name="Torso", pos=[0,0,1] , size=[length, width, height])
+        pyrosim.Send_Joint(name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [0,-0.5,1.0])
+        pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0] , size=[0.2,1,0.2])
+        pyrosim.Send_Joint(name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0,0.5,1.0])
+        pyrosim.Send_Cube(name="FrontLeg", pos=[0,0.5,0] , size=[0.2,1,0.2])
         pyrosim.End()
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
