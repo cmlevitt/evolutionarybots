@@ -5,13 +5,14 @@ from pyrosim import pyrosim
 import random
 import os
 import time
+import constants as c
 
 
 
 class SOLUTION:
     def __init__(self, myID):
         self.myID = myID
-        self.weights = np.random.random((3,2))
+        self.weights = np.random.random((c.numSensorNeurons, c.numMotorNeurons))
         self.weights = self.weights * 2 - 1
 
     def Set_ID(self, myID):
@@ -20,7 +21,7 @@ class SOLUTION:
     def Start_Simulation(self, directOrGUI):
         self.Create_World()
         self.Create_Body()
-        self.Create_Brain()
+        self.Generate_Brain()
         os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
 
     def Wait_For_Simulation_To_End(self):
@@ -54,8 +55,8 @@ class SOLUTION:
         os.system("del fitness" + str(self.myID) + ".txt")
 
     def Mutate(self):
-        randomRow = random.randint(0,2)
-        randomColumn = random.randint(0,1)
+        randomRow = random.randint(0, c.numSensorNeurons - 1)
+        randomColumn = random.randint(0, c.numMotorNeurons - 1)
         self.weights[randomRow][randomColumn] = random.random() * 2 - 1
 
 
@@ -79,7 +80,7 @@ class SOLUTION:
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
 
-    def Create_Brain(self):
+    def Generate_Brain(self):
         pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
@@ -90,11 +91,12 @@ class SOLUTION:
 
         #sensorNeurons = [0,1,2]
         #motorNeurons = [3,4]
-        for currentRow in [0,1,2]:
-                for currentColumn in [0,1]:
+        for currentRow in range(c.numSensorNeurons):
+                for currentColumn in range(c.numMotorNeurons):
                     pyrosim.Send_Synapse( sourceNeuronName = currentRow, targetNeuronName = currentColumn + 3, weight = self.weights[currentRow][currentColumn] )
 
         pyrosim.End()
         while not os.path.exists(f"brain{self.myID}.nndf"):
             time.sleep(0.01)
+        
 
