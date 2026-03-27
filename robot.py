@@ -12,6 +12,8 @@ class ROBOT:
 
     def __init__(self, solutionID):
         self.robotId = p.loadURDF("body.urdf")
+        while not os.path.exists("body.urdf"):
+            time.sleep(0.01)
         self.myID = solutionID
         self.nn = NEURAL_NETWORK("brain" + str(self.myID) + ".nndf")
     
