@@ -103,12 +103,87 @@ class SOLUTION:
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
 
-    def Generate_Arena(self): #THIS ONE!!
-       #pass
-       pyrosim.Start_URDF("arena.urdf")
-       pyrosim.Send_Cube(name="Ground", pos=[0,0,0.5] , size=[10, 10, 1])
-       pyrosim.End()
-       while not os.path.exists("arena.urdf"):
+    def Generate_Arena(self, length=c.ar_length, width=c.ar_width, height=c.ar_height,
+                   side_wall_thickness=c.side_wall_thickness, platform_thickness=c.platform_thickness,
+                   floor_thickness=c.floor_thickness):
+
+        pyrosim.Start_URDF("arena.urdf")
+
+        # floor
+        pyrosim.Send_Cube(
+            name="Floor",
+            pos=[0, 0, 0.1],
+            size=[length, width, floor_thickness],
+            #make arena pink
+            color=[1, 0.75, 0.8]
+        )
+
+        # front wall
+        pyrosim.Send_Joint(
+            name="Floor_FrontWall",
+            parent="Floor",
+            child="FrontWall",
+            type="fixed",
+            position=[0, width/2, height/2]
+        )
+        pyrosim.Send_Cube(
+            name="FrontWall",
+            pos=[0, 0, 0],
+            size=[length, side_wall_thickness, height],
+            color=[1, 0.75, 0.8]
+        )
+
+        # back wall
+        pyrosim.Send_Joint(
+            name="Floor_BackWall",
+            parent="Floor",
+            child="BackWall",
+            type="fixed",
+            position=[0, -width/2, height/2]
+        )
+        pyrosim.Send_Cube(
+            name="BackWall",
+            pos=[0, 0, 0],
+            size=[length, side_wall_thickness, height],
+            color=[1, 0.75, 0.8]
+        )
+
+        #offset for makiing sure the walls are flush with floor and not intersecting it
+        offset = (platform_thickness - side_wall_thickness) / 2
+
+        #right wall
+        pyrosim.Send_Joint(
+            name="Floor_RightWall",
+            parent="Floor",
+            child="RightWall",
+            type="fixed",
+            position=[length/2 + offset, 0, height/2]
+        )
+        pyrosim.Send_Cube(
+            name="RightWall",
+            pos=[0, 0, 0],
+            size=[platform_thickness, width, height],
+            color=[1, 0.75, 0.8]
+        )
+
+        #lft wall
+        pyrosim.Send_Joint(
+            name="Floor_LeftWall",
+            parent="Floor",
+            child="LeftWall",
+            type="fixed",
+            position=[-length/2 - offset, 0, height/2]
+        )
+        pyrosim.Send_Cube(
+            name="LeftWall",
+            pos=[0, 0, 0],
+            size=[platform_thickness, width, height],
+            color=[1, 0.75, 0.8]
+        )
+
+        pyrosim.End()
+
+        while not os.path.exists("arena.urdf"):
             time.sleep(0.01)
 
 
