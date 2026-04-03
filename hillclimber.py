@@ -20,6 +20,7 @@ class HILL_CLIMBER:
 
     def Show_Best(self):
         self.parent.Evaluate("GUI")
+        #time.sleep(1/60) didnt fix
 
 
     def Print(self):

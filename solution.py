@@ -22,6 +22,7 @@ class SOLUTION:
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
+        self.Generate_Arena()
         os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
 
     def Wait_For_Simulation_To_End(self):
@@ -43,6 +44,7 @@ class SOLUTION:
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
+        self.Generate_Arena()
 
         os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
@@ -100,7 +102,16 @@ class SOLUTION:
         pyrosim.End()
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
-        
+
+    def Generate_Arena(self): #THIS ONE!!
+       #pass
+       pyrosim.Start_URDF("arena.urdf")
+       pyrosim.Send_Cube(name="Ground", pos=[0,0,0.5] , size=[10, 10, 1])
+       pyrosim.End()
+       while not os.path.exists("arena.urdf"):
+            time.sleep(0.01)
+
+
     def Generate_Brain(self): 
         pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         #pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")

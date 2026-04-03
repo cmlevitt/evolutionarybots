@@ -10,6 +10,7 @@ height = 1
 #one link 
 def Create_World():
     pyrosim.Start_SDF("world.sdf")
+    #Generate_Arena()
     #pyrosim.Send_Cube(name="Box", pos=[-5,3,0.5] , size=[length, width, height])
     pyrosim.End()
 
@@ -21,6 +22,12 @@ def Generate_Body():
     pyrosim.Send_Joint(name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0.5,0,1.0])
     pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[length, width, height])
     pyrosim.End()
+
+def Generate_Arena():
+    pyrosim.Start_URDF("arena.urdf")
+    pyrosim.Send_Cube(name="Ground", pos=[0,0,0.5] , size=[10, 10, 1], mass=0)
+    pyrosim.End()
+
 '''
 def Create_Brain():
     pyrosim.Start_NeuralNetwork("brain.nndf")
@@ -43,4 +50,5 @@ def Create_Brain():
 '''
 Create_World()
 Generate_Body()
+Generate_Arena()
 #Create_Brain()

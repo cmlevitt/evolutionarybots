@@ -25,15 +25,16 @@ class PARALELL_HILL_CLIMBER:
         self.Select()
 
     def Show_Best(self):
-        #self.parent.Evaluate("GUI")
+        #self.parents.Evaluate("GUI")
         bestParent = None
         mostFit = None
         for key in self.parents:
             if mostFit == None or self.parents[key].fitness < mostFit:
                 mostFit = self.parents[key].fitness
                 bestParent = key
+        #directOrGUI = "GUI"
         self.parents[bestParent].Start_Simulation("GUI")
-        time.sleep(1/60)
+        
        # self.parents[bestParent].Wait_For_Simulation_To_End()
 
 
