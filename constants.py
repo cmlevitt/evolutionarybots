@@ -14,10 +14,10 @@ numMotorNeurons = 8
 motorJointRange = 0.2
 
 #Arena
-ar_length=5
-ar_width=10
+ar_length=10
+ar_width=6
 ar_height=2
 side_wall_thickness=0.2
-platform_thickness=5
+platform_thickness=3
 floor_thickness=0.2
 

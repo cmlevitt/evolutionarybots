@@ -13,7 +13,7 @@ class SIMULATION:
         self.directOrGUI = directOrGUI
         self.solutionID = solutionID
         if directOrGUI == "GUI":
-            physicsClient = p.connect(p.GUI)
+            physicsClient = p.connect(p.GUI, options="--background_color_red=1 --background_color_green=.957 --background_color_blue=0.992")
             #time.sleep(1/60) didnt fix
         else:
             physicsClient = p.connect(p.DIRECT)

@@ -6,6 +6,8 @@ import random
 import os
 import time
 import constants as c
+from pyrosim.material import MATERIAL
+import pybullet as p
 
 
 
@@ -69,14 +71,16 @@ class SOLUTION:
             time.sleep(0.01)
 
     def Generate_Body(self):
+
         length = 1
         width = 1
         height = 1
         pyrosim.Start_URDF("body.urdf")
-        pyrosim.Send_Cube(name="Torso", pos=[0,0,1] , size=[length, width, height])
 
+        pyrosim.Send_Cube(name="Torso", pos=[0,0,1] , size=[length, width, height])
+        
         pyrosim.Send_Joint(name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [0,-0.5,1.0], jointAxis = "1 0 0")
-        pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0] , size=[0.2,1,0.2])
+        pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0] , size=[0.2,1,0.2],)
 
         pyrosim.Send_Joint(name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0,0.5,1.0], jointAxis = "1 0 0")
         pyrosim.Send_Cube(name="FrontLeg", pos=[0,0.5,0] , size=[0.2,1,0.2])
@@ -109,13 +113,11 @@ class SOLUTION:
 
         pyrosim.Start_URDF("arena.urdf")
 
-        # floor
         pyrosim.Send_Cube(
             name="Floor",
             pos=[0, 0, 0.1],
             size=[length, width, floor_thickness],
-            #make arena pink
-            color=[1, 0.75, 0.8]
+
         )
 
         # front wall
@@ -130,7 +132,7 @@ class SOLUTION:
             name="FrontWall",
             pos=[0, 0, 0],
             size=[length, side_wall_thickness, height],
-            color=[1, 0.75, 0.8]
+
         )
 
         # back wall
@@ -145,7 +147,8 @@ class SOLUTION:
             name="BackWall",
             pos=[0, 0, 0],
             size=[length, side_wall_thickness, height],
-            color=[1, 0.75, 0.8]
+            #make arena hot pink
+
         )
 
         #offset for makiing sure the walls are flush with floor and not intersecting it
@@ -163,7 +166,8 @@ class SOLUTION:
             name="RightWall",
             pos=[0, 0, 0],
             size=[platform_thickness, width, height],
-            color=[1, 0.75, 0.8]
+            #make arena hot pink
+
         )
 
         #lft wall
@@ -178,7 +182,6 @@ class SOLUTION:
             name="LeftWall",
             pos=[0, 0, 0],
             size=[platform_thickness, width, height],
-            color=[1, 0.75, 0.8]
         )
 
         pyrosim.End()

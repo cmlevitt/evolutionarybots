@@ -13,6 +13,10 @@ class ROBOT:
 
     def __init__(self, solutionID):
         self.robotId = p.loadURDF("body.urdf")
+        
+        for cube in range(p.getNumJoints(self.robotId)):
+            p.changeVisualShape(self.robotId, cube, rgbaColor=[0.9, 0.75, 0.8, 1])
+        p.changeVisualShape(self.robotId, -1, rgbaColor=[0.9, 0.75, 0.8, 1])
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
         self.myID = solutionID
