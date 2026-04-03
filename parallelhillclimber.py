@@ -1,3 +1,5 @@
+from time import time
+
 import hillclimber
 import solution
 import constants
@@ -31,6 +33,7 @@ class PARALELL_HILL_CLIMBER:
                 mostFit = self.parents[key].fitness
                 bestParent = key
         self.parents[bestParent].Start_Simulation("GUI")
+        time.sleep(1/60)
        # self.parents[bestParent].Wait_For_Simulation_To_End()
 
 

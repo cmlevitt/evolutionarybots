@@ -1,3 +1,5 @@
+import time
+
 import hillclimber
 import solution
 import constants
@@ -18,6 +20,7 @@ class HILL_CLIMBER:
 
     def Show_Best(self):
         self.parent.Evaluate("GUI")
+
 
     def Print(self):
         print("*************************************************************************************************")
