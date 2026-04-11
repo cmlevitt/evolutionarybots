@@ -47,6 +47,7 @@ class SOLUTION:
         self.Generate_Body()
         self.Generate_Brain()
         self.Generate_Arena()
+        self.Generate_Balls()
 
         os.system("start /B python simulate.py " + directOrGUI + " " + str(self.myID))
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
@@ -112,50 +113,27 @@ class SOLUTION:
         pyrosim.Send_Cube(name="RightLowerLeg", pos=[0,0,-0.5], size=[0.2,0.2,1.0])
 
         pyrosim.End()
-        '''
-        length = 1
-        width = 1
-        height = 1
-
-        # Spawn offset to place robot on right platform
-        x_off = c.ar_length/2 + (c.platform_thickness - c.side_wall_thickness) / 2
-        z_off = 0.1 + c.ar_height + 1  # platform top + leg height
-        pyrosim.Start_URDF("body.urdf")
-
-        platform_x = c.ar_length/2 + (c.platform_thickness - c.side_wall_thickness) / 2
-        platform_top_z = 0.1 + c.ar_height  # floor base + wall/platform height
-
-        pyrosim.Send_Cube(name="Torso", pos=[x_off, 0, z_off + 1], size=[length, width, height])
-        #pyrosim.Send_Cube(name="Torso", pos=[0,0,1] , size=[length, width, height])
-        
-        pyrosim.Send_Joint(name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [0,-0.5,1.0], jointAxis = "1 0 0")
-        pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0] , size=[0.2,1,0.2],)
-
-        pyrosim.Send_Joint(name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0,0.5,1.0], jointAxis = "1 0 0")
-        pyrosim.Send_Cube(name="FrontLeg", pos=[0,0.5,0] , size=[0.2,1,0.2])
-
-        pyrosim.Send_Joint(name = "Torso_LeftLeg" , parent= "Torso" , child = "LeftLeg" , type = "revolute", position = [-0.5,0,1.0], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name="LeftLeg", pos=[-0.5,0,0] , size=[1,0.2,0.2])
-
-        pyrosim.Send_Joint(name = "Torso_RightLeg" , parent= "Torso" , child = "RightLeg" , type = "revolute", position = [0.5,0,1.0], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name="RightLeg", pos=[0.5,0,0] , size=[1,0.2,0.2])
-
-        pyrosim.Send_Joint(name = "FrontLeg_FrontLowerLeg" , parent= "FrontLeg" , child = "FrontLowerLeg" , type = "revolute", position = [0, 1, 0], jointAxis = "1 0 0")
-        pyrosim.Send_Cube(name="FrontLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1])
-
-        pyrosim.Send_Joint(name = "BackLeg_BackLowerLeg" , parent= "BackLeg" , child = "BackLowerLeg" , type = "revolute", position = [0, -1, 0], jointAxis = "1 0 0")
-        pyrosim.Send_Cube(name="BackLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1])
-
-        pyrosim.Send_Joint(name = "LeftLeg_LeftLowerLeg" , parent= "LeftLeg" , child = "LeftLowerLeg" , type = "revolute", position = [-1, 0, 0], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name="LeftLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1.0])
-
-        pyrosim.Send_Joint(name = "RightLeg_RightLowerLeg" , parent= "RightLeg" , child = "RightLowerLeg" , type = "revolute", position = [1, 0, 0], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name="RightLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1.0])
-
-        pyrosim.End()
         while not os.path.exists("body.urdf"):
-            time.sleep(0.01)
-'''
+            time.sleep(0.01)    
+
+    def Generate_Balls(self):
+        placed = []
+
+        for i in range(300):
+            radius = random.uniform(0.08, 0.5)
+
+            # non-overlapping position
+            for _ in range(100):
+                x = random.uniform(-3, 3)
+                y = random.uniform(-2, 2)
+                if all(((x-px)**2 + (y-py)**2)**0.5 > radius + pr + 0.1 for px, py, pr in placed):
+                    break
+
+            body = p.createMultiBody(radius*50, p.createCollisionShape(p.GEOM_SPHERE, radius=radius),-1,[x, y, radius + i * 0.01])
+            p.changeDynamics(body, -1, linearDamping=0.9, angularDamping=0.9, restitution=0.01)
+            placed.append((x, y, radius))
+
+
     def Generate_Arena(self, length=c.ar_length, width=c.ar_width, height=c.ar_height,
                    side_wall_thickness=c.side_wall_thickness, platform_thickness=c.platform_thickness,
                    floor_thickness=c.floor_thickness):
