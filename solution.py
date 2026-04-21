@@ -76,8 +76,8 @@ class SOLUTION:
         width = 1
         height = 1
 
-        x_off = c.ar_length/2 + (c.platform_thickness - c.side_wall_thickness) / 2
-        z_off = 0.1 + c.ar_height + 1
+        x_off = c.ar_length / 2 - 2.0   # near right wall, inside pit
+        z_off = c.floor_thickness + 1.5  # above balls
 
         # Deltas from original torso position [0, 0, 1]
         dx = x_off - 0

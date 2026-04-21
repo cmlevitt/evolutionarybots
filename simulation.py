@@ -6,6 +6,7 @@ import pybullet_data
 import time
 import pyrosim.pyrosim as pyrosim
 import random as random
+import constants as c
 
 
 class SIMULATION:
@@ -24,7 +25,7 @@ class SIMULATION:
         p.setGravity(0,0,-9.8,physicsClient)
 
         self.world = WORLD()
-        self.Generate_Balls()
+        #self.Generate_Balls()
         self.robot = ROBOT(self.solutionID)
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
         self.robot.Prepare_To_Sense()
@@ -70,11 +71,13 @@ class SIMULATION:
         #print(f"Ball-drop phase: {time.time()-t0:.3f}s")
 
         t1 = time.time()
-        for i in range(2000):
+        for i in range(1000):
             p.stepSimulation()
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.Act(i)
+            if self.directOrGUI == "GUI":
+                time.sleep(1/60) #TIME DELAY
         #print(f"Robot phase: {time.time()-t1:.3f}s ({self.directOrGUI})")
     # def Run(self):
     #     for i in range(500): #let balls fall before starting to move

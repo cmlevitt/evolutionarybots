@@ -11,7 +11,7 @@ populationSize = 1
 #joints/neurons
 numSensorNeurons = 5
 numMotorNeurons = 8
-motorJointRange = .2
+motorJointRange = pi/4
 
 #Arena
 ar_length=8
