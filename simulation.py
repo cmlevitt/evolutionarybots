@@ -25,7 +25,7 @@ class SIMULATION:
         p.setGravity(0,0,-9.8,physicsClient)
 
         self.world = WORLD()
-        #self.Generate_Balls()
+        self.Generate_Balls()
         self.robot = ROBOT(self.solutionID)
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
         self.robot.Prepare_To_Sense()
@@ -48,7 +48,7 @@ class SIMULATION:
             col = p.createCollisionShape(p.GEOM_SPHERE, radius=r)
             body = p.createMultiBody(r * 200, col, -1, [x, y, random.uniform(0.3, 1.5)])
             p.changeDynamics(body, -1,
-                lateralFriction=0.4,
+                lateralFriction=0.1,
                 rollingFriction=0.1,
                 spinningFriction=0.1,
                 restitution=0.0,
@@ -56,7 +56,7 @@ class SIMULATION:
                 angularDamping=0.1)
             
             if i % 30 == 0:
-                for _ in range(40):
+                for _ in range(10):
                     p.stepSimulation()
 
         for _ in range(50):
@@ -71,11 +71,30 @@ class SIMULATION:
         #print(f"Ball-drop phase: {time.time()-t0:.3f}s")
 
         t1 = time.time()
+        self.robot.total_movement = 0
+        self.robot.stall_steps = 0
+        self.robot.prev_x = None
         for i in range(1000):
             p.stepSimulation()
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.Act(i)
+
+            state = p.getLinkState(self.robot.robotId, 0)
+            x = state[0][0]
+
+            if self.robot.prev_x is None:
+                self.robot.prev_x = x
+            else:
+                dx = abs(x - self.robot.prev_x)
+
+                self.robot.total_movement += dx
+
+                if dx < 0.0005:
+                    self.robot.stall_steps += 1
+
+                self.robot.prev_x = x
+
             if self.directOrGUI == "GUI":
                 time.sleep(1/60) #TIME DELAY
         #print(f"Robot phase: {time.time()-t1:.3f}s ({self.directOrGUI})")
