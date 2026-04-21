@@ -19,7 +19,13 @@ class WORLD:
         p.loadSDF("world.sdf")
         #spawn arena w fixed to the world
         self.arenaId = p.loadURDF("arena.urdf", useFixedBase=True)
-        solution.SOLUTION.Generate_Balls(self)    
+        num_joints = p.getNumJoints(self.arenaId)
+        for i in range(-1, num_joints):
+            p.changeDynamics(self.arenaId, i,
+                            restitution=0.0,
+                            lateralFriction=1.0,
+                            spinningFriction=1.0)
+        #solution.SOLUTION.Generate_Balls(self)    
 
         
         #while not os.path.exists("world.sdf"):

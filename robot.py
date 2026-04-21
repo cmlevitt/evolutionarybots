@@ -51,13 +51,33 @@ class ROBOT:
         self.nn.Update()
         #self.nn.Print()
             
-    def Get_Fitness(self):
-        stateOfLinkZero = p.getLinkState(self.robotId,0)
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
-        with open("tmp" + str(self.myID) + ".txt", "w") as f:
-            f.write(str(xCoordinateOfLinkZero))
-        os.replace("tmp"+str(self.myID)+".txt" , "fitness"+str(self.myID)+".txt")
+    # def Get_Fitness(self):
+    #     stateOfLinkZero = p.getLinkState(self.robotId,0)
+    #     positionOfLinkZero = stateOfLinkZero[0]
+    #     xCoordinateOfLinkZero = positionOfLinkZero[0]
+    #     with open("tmp" + str(self.myID) + ".txt", "w") as f:
+    #         f.write(str(xCoordinateOfLinkZero))
+    #     os.replace("tmp"+str(self.myID)+".txt" , "fitness"+str(self.myID)+".txt")
 
+    #     os.system("del brain" + str(self.myID) + ".nndf")
+    #     #print("Fitness check:", xCoordinateOfLinkZero)
+
+    def Get_Fitness(self):
+        pos, _ = p.getBasePositionAndOrientation(self.robotId)
+        x, y, z = pos[0], pos[1], pos[2]
+
+        fitness = x  # reward crossing in -X direction
+
+        # penalize leaving arena sideways
+        arena_y = 2.0
+        if abs(y) > arena_y:
+            fitness += abs(y) * 2  # scale as needed
+
+        # penalize falling over (root link too close to ground)
+        if z < 0.1:
+            fitness += 5.0
+
+        with open("tmp" + str(self.myID) + ".txt", "w") as f:
+            f.write(str(fitness))
+        os.replace("tmp" + str(self.myID) + ".txt", "fitness" + str(self.myID) + ".txt")
         os.system("del brain" + str(self.myID) + ".nndf")
-        #print("Fitness check:", xCoordinateOfLinkZero)

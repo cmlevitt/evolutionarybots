@@ -5,7 +5,7 @@ import parallelhillclimber
 
 phc = parallelhillclimber.PARALELL_HILL_CLIMBER()
 phc.Evolve()
-#time.sleep(1/60) didnt fix
+#time.sleep(1/60) 
 phc.Show_Best()
 
 '''for i in range(2):

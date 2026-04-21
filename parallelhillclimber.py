@@ -34,9 +34,9 @@ class PARALELL_HILL_CLIMBER:
                 bestParent = key
         #directOrGUI = "GUI"
         self.parents[bestParent].Start_Simulation("GUI")
-        time.sleep(1/60) 
+        #time.sleep(1/100) 
         
-       # self.parents[bestParent].Wait_For_Simulation_To_End()
+        self.parents[bestParent].Wait_For_Simulation_To_End()
 
 
     def Print(self):
