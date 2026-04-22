@@ -5,13 +5,13 @@ frequency = 10
 phaseOffset = 0
 
 #experiment size
-numberOfGenerations = 5
-populationSize = 5
+numberOfGenerations = 10
+populationSize = 8
 
 #joints/neurons
-numSensorNeurons = 4
+numSensorNeurons = 8
 numMotorNeurons = 8
-motorJointRange = pi/6
+motorJointRange = 0.2
 
 #Arena
 ar_length=8

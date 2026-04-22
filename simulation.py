@@ -44,7 +44,8 @@ class SIMULATION:
         for i in range(cols * rows):
             x = x_start + (i % cols) * spacing + random.uniform(-0.05, 0.05)
             y = y_start + (i // cols) * spacing + random.uniform(-0.05, 0.05)
-            spawn_x = c.ar_length / 2 - 1.0
+            # robots starting 
+            spawn_x = c.ar_length / 2 - 2.0
             # avoid spawning balls too close to the robot's starting position (within 0.8 units)
             if (x - spawn_x)**2 + y**2 < 0.64:
                 continue
@@ -61,11 +62,13 @@ class SIMULATION:
                 linearDamping=0.1,    
                 angularDamping=0.1)
                 
+            #every 20 balls, let settle 
             if i % 30 == 0:
-                for _ in range(10):
+                for _ in range(40):
                     p.stepSimulation()
 
-        for _ in range(50):
+    # let balls settle before starting main simulation loop
+        for _ in range(300):
             p.stepSimulation()
 
     def Run(self):

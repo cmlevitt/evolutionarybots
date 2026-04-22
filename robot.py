@@ -8,6 +8,7 @@ from sensor import SENSOR
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import constants as c
+import numpy as np
 
 class ROBOT:
 
@@ -30,9 +31,10 @@ class ROBOT:
 
     def Prepare_To_Sense(self):
         self.sensors = {}
-        for linkName in ["Torso", "BackLowerLeg", "FrontLowerLeg", "LeftLowerLeg", "RightLowerLeg"]:
+        # for linkname in ["BackLowerLeg", "FrontLowerLeg", "LeftLowerLeg", "RightLowerLeg"]:
+        for linkName in ["BackLeg", "FrontLeg", "LeftLeg", "RightLeg",
+                        "BackLowerLeg", "FrontLowerLeg", "LeftLowerLeg", "RightLowerLeg"]:
             self.sensors[linkName] = SENSOR(linkName)
-        pass
 
     def Sense(self, i):
         for sensor in self.sensors:
@@ -53,7 +55,16 @@ class ROBOT:
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 desiredAngle = (self.nn.Get_Value_Of(neuronName)* c.motorJointRange)
                 self.motors[jointName.encode()].Set_Value(self.robotId, desiredAngle)
-                #print(neuronName, jointName, desiredAngle)
+        # for idx, jointName in enumerate(pyrosim.jointNamesToIndices):
+        #     # set angle
+        #     angle = c.motorJointRange * np.sin(i * 0.1 + idx * 0.5)
+        #     try:
+        #         self.motors[jointName].Set_Value(self.robotId, angle)
+        #     except KeyError:
+        #         self.motors[jointName.encode()].Set_Value(self.robotId, angle)
+        #     if i % 100 == 0:
+        #         print(f"Step {i}: joint {jointName}, angle {angle:.3f}")
+                # #print(neuronName, jointName, desiredAngle)
 
     def Think(self):
         self.nn.Update()
@@ -61,15 +72,27 @@ class ROBOT:
    
     def Get_Fitness(self):
 
-        stateOfLinkZero = p.getLinkState(self.robotId, 0)
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
+        # stateOfLinkZero = p.getLinkState(self.robotId, 0)
+        # positionOfLinkZero = stateOfLinkZero[0]
+        # xCoordinateOfLinkZero = positionOfLinkZero[0]
+        pos, _ = p.getBasePositionAndOrientation(self.robotId)
+        #x = pos[0]
+        x, y, z = pos
 
-        # add stall penalty 
-        stall_penalty = 0.02 * self.stall_steps
+        stall_penalty = 0.001 * self.stall_steps
 
-        fitness = xCoordinateOfLinkZero + stall_penalty
+        # penalize falling over
+        fall_penalty = 10.0 if z < 1.2 else 0.0
 
+        displacement = 2.0 - x  # positive when moving in -x from spawn at 2.0
+        fitness = -displacement + stall_penalty + fall_penalty  # minimize displacement and stall, heavily penalize falling over
+
+        #fitness = xCoordinateOfLinkZero + stall_penalty
+        fell = z < 1.2
+
+        #trying to debug fitness values, log to file
+        with open("fitness_log.txt", "a") as log:
+            log.write(f"[{self.myID}] x={x:.2f} z={z:.2f} fell={fell} stall={self.stall_steps}\n")
         with open("tmp" + str(self.myID) + ".txt", "w") as f:
             f.write(str(fitness))
 

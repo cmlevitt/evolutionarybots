@@ -260,30 +260,29 @@ class SOLUTION:
 
     def Generate_Brain(self): 
         pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
-        #pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
-        #pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
-        #pyrosim.Send_Sensor_Neuron(name = 2 , linkName = "FrontLeg")
-        #pyrosim.Send_Sensor_Neuron(name = 3 , linkName = "LeftLeg")
-        #pyrosim.Send_Sensor_Neuron(name = 4 , linkName = "RightLeg")
+        
+        pyrosim.Send_Sensor_Neuron(name=0, linkName="BackLeg")
+        pyrosim.Send_Sensor_Neuron(name=1, linkName="FrontLeg")
+        pyrosim.Send_Sensor_Neuron(name=2, linkName="LeftLeg")
+        pyrosim.Send_Sensor_Neuron(name=3, linkName="RightLeg")
+        pyrosim.Send_Sensor_Neuron(name=4, linkName="BackLowerLeg")
+        pyrosim.Send_Sensor_Neuron(name=5, linkName="FrontLowerLeg")
+        pyrosim.Send_Sensor_Neuron(name=6, linkName="LeftLowerLeg")
+        pyrosim.Send_Sensor_Neuron(name=7, linkName="RightLowerLeg")
 
-        pyrosim.Send_Sensor_Neuron(name=0, linkName="BackLowerLeg")
-        pyrosim.Send_Sensor_Neuron(name=1, linkName="FrontLowerLeg")
-        pyrosim.Send_Sensor_Neuron(name=2, linkName="LeftLowerLeg")
-        pyrosim.Send_Sensor_Neuron(name=3, linkName="RightLowerLeg")
-
-        pyrosim.Send_Motor_Neuron(name=4,  jointName="Torso_BackLeg")
-        pyrosim.Send_Motor_Neuron(name=5,  jointName="Torso_FrontLeg")
-        pyrosim.Send_Motor_Neuron(name=6,  jointName="Torso_LeftLeg")
-        pyrosim.Send_Motor_Neuron(name=7,  jointName="Torso_RightLeg")
-        pyrosim.Send_Motor_Neuron(name=8,  jointName="FrontLeg_FrontLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=9,  jointName="BackLeg_BackLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=10, jointName="LeftLeg_LeftLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=11, jointName="RightLeg_RightLowerLeg")
+        pyrosim.Send_Motor_Neuron(name=8,  jointName="Torso_BackLeg")
+        pyrosim.Send_Motor_Neuron(name=9,  jointName="Torso_FrontLeg")
+        pyrosim.Send_Motor_Neuron(name=10, jointName="Torso_LeftLeg")
+        pyrosim.Send_Motor_Neuron(name=11, jointName="Torso_RightLeg")
+        pyrosim.Send_Motor_Neuron(name=12, jointName="FrontLeg_FrontLowerLeg")
+        pyrosim.Send_Motor_Neuron(name=13, jointName="BackLeg_BackLowerLeg")
+        pyrosim.Send_Motor_Neuron(name=14, jointName="LeftLeg_LeftLowerLeg")
+        pyrosim.Send_Motor_Neuron(name=15, jointName="RightLeg_RightLowerLeg")
 
         for currentRow in range(c.numSensorNeurons):
             for currentColumn in range(c.numMotorNeurons):
                 pyrosim.Send_Synapse(sourceNeuronName=currentRow,
-                                    targetNeuronName=currentColumn + 3,
+                                    targetNeuronName=currentColumn + 8,
                                     weight=self.weights[currentRow][currentColumn])
 
         pyrosim.End()
