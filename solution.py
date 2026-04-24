@@ -59,10 +59,16 @@ class SOLUTION:
         f.close()
         os.system("del fitness" + str(self.myID) + ".txt")
 
+    # def Mutate(self):
+    #     randomRow = random.randint(0, c.numSensorNeurons - 1)
+    #     randomColumn = random.randint(0, c.numMotorNeurons - 1)
+    #     self.weights[randomRow][randomColumn] = random.random() * 2 - 1
+
     def Mutate(self):
-        randomRow = random.randint(0, c.numSensorNeurons - 1)
-        randomColumn = random.randint(0, c.numMotorNeurons - 1)
-        self.weights[randomRow][randomColumn] = random.random() * 2 - 1
+        for row in range(c.numSensorNeurons):
+            for col in range(c.numMotorNeurons):
+                if random.random() < 0.1:
+                    self.weights[row][col] = random.random() * 2 - 1
 
 
     def Create_World(self):
@@ -77,7 +83,7 @@ class SOLUTION:
         height = 1
 
         x_off = c.ar_length / 2 - 2.0   # near right wall, inside pit
-        z_off = c.floor_thickness + 1.5  # above balls
+        z_off = c.floor_thickness + 2.0  # above balls
 
         # Deltas from original torso position [0, 0, 1]
         dx = x_off - 0
@@ -116,126 +122,12 @@ class SOLUTION:
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)  
 
-    # # def Generate_Balls(self):
-    # #     min_r, max_r = 0.08, 0.5
-    # #     count = 400
 
-    # #     for i in range(count):
-    # #         radius = min_r + (max_r - min_r) * random.random() ** 2
-
-    # #         x = random.uniform(-2.8, 2.8)
-    # #         y = random.uniform(-1.8, 1.8)
-    # #         z = random.uniform(0.2, 2.5)
-
-    # #         mass = (radius ** 3) * 500
-    # #         col = p.createCollisionShape(p.GEOM_SPHERE, radius=radius)
-    # #         body = p.createMultiBody(mass, col, -1, [x, y, z])
-    # #         p.changeDynamics(body, -1,
-    # #                         linearDamping=0.8,
-    # #                         angularDamping=0.99,
-    # #                         restitution=0.0,
-    # #                         lateralFriction=1.0,
-    # #                         rollingFriction=1.0)
-
-    # def Generate_Balls(self):
-    #     placed = []
-
-    #     for i in range(500):
-    #         radius = random.uniform(0.08, 0.25)
-
-    #         # non-overlapping position
-    #         for _ in range(100):
-    #             x = random.uniform(-3, 3)
-    #             y = random.uniform(-2, 2)
-    #             if all(((x-px)**2 + (y-py)**2)**0.5 > radius + pr + 0.1 for px, py, pr in placed):
-    #                 break
-
-    #         body = p.createMultiBody(radius*50, p.createCollisionShape(p.GEOM_SPHERE, radius=radius),-1,[x, y, radius + i * 0.005])
-    #         p.changeDynamics(body, -1, linearDamping=0.99, angularDamping=0.99, restitution=0.0, lateralFriction=1.0, rollingFriction=1.0)
-    #         placed.append((x, y, radius))
-    
-
-
-    # def Generate_Arena(self, length=c.ar_length, width=c.ar_width, height=c.ar_height,
-    #                side_wall_thickness=c.side_wall_thickness, platform_thickness=c.platform_thickness,
-    #                floor_thickness=c.floor_thickness):
-
-    #     pyrosim.Start_URDF("arena.urdf")
-
-    #     pyrosim.Send_Cube(
-    #         name="Floor",
-    #         pos=[0, 0, 0.1],
-    #         size=[length, width, floor_thickness],
-    #     )
-
-    #     # front wall
-    #     pyrosim.Send_Joint(
-    #         name="Floor_FrontWall",
-    #         parent="Floor",
-    #         child="FrontWall",
-    #         type="fixed",
-    #         position=[0, width/2, height/2]
-    #     )
-    #     pyrosim.Send_Cube(
-    #         name="FrontWall",
-    #         pos=[0, 0, 0],
-    #         size=[length, side_wall_thickness, height],
-    #     )
-
-    #     # back wall
-    #     pyrosim.Send_Joint(
-    #         name="Floor_BackWall",
-    #         parent="Floor",
-    #         child="BackWall",
-    #         type="fixed",
-    #         position=[0, -width/2, height/2]
-    #     )
-    #     pyrosim.Send_Cube(
-    #         name="BackWall",
-    #         pos=[0, 0, 0],
-    #         size=[length, side_wall_thickness, height],
-    #     )
-
-    #     #offset for makiing sure the walls are flush with floor and not intersecting it
-    #     offset = (platform_thickness - side_wall_thickness) / 2
-
-    #     #right wall
-    #     pyrosim.Send_Joint(
-    #         name="Floor_RightWall",
-    #         parent="Floor",
-    #         child="RightWall",
-    #         type="fixed",
-    #         position=[length/2 + offset, 0, height/2]
-            
-    #     )
-    #     pyrosim.Send_Cube(
-    #         name="RightWall",
-    #         pos=[0, 0, 0],
-    #         size=[platform_thickness, width, height],
-
-    #     )
-
-    #     #lft wall
-    #     pyrosim.Send_Joint(
-    #         name="Floor_LeftWall",
-    #         parent="Floor",
-    #         child="LeftWall",
-    #         type="fixed",
-    #         position=[-length/2 - offset, 0, height/2]
-    #     )
-    #     pyrosim.Send_Cube(
-    #         name="LeftWall",
-    #         pos=[0, 0, 0],
-    #         size=[platform_thickness, width, height],
-    #     )
-
-    #     pyrosim.End()
-
-    #     while not os.path.exists("arena.urdf"):
-    #         time.sleep(0.01)
     def Generate_Arena(self, length=c.ar_length, width=c.ar_width, height=c.ar_height,
                    wall_thickness=c.wall_thickness, floor_thickness=c.floor_thickness):
 
+        if os.path.exists("arena.urdf"):
+            os.remove("arena.urdf")
         pyrosim.Start_URDF("arena.urdf")
 
         pyrosim.Send_Cube(name="Floor", pos=[0, 0, 0.1], size=[length, width, floor_thickness])
@@ -254,7 +146,7 @@ class SOLUTION:
 
         pyrosim.End()
 
-        while not os.path.exists("arena.urdf"):
+        while not os.path.exists("arena.urdf") or os.path.getsize("arena.urdf") < 500:
             time.sleep(0.01)
 
 

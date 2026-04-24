@@ -31,44 +31,27 @@ class SIMULATION:
         self.robot.Prepare_To_Sense()
         self.robot.Prepare_To_Act(robotId=self.robot.robotId)
 
+    
     def Generate_Balls(self):
-        # generate balls in a grid pattern with some random offset,  avoid spawning them too close to the robot's starting position
-        spacing = 0.28
-        cols, rows = 26, 17
-
-        # center the grid around the origin
-        x_start = -((cols - 1) * spacing) / 2  
-        y_start = -((rows - 1) * spacing) / 2
-
-        # spawn balls with random offsets
-        for i in range(cols * rows):
-            x = x_start + (i % cols) * spacing + random.uniform(-0.05, 0.05)
-            y = y_start + (i // cols) * spacing + random.uniform(-0.05, 0.05)
-            # robots starting 
-            spawn_x = c.ar_length / 2 - 2.0
-            # avoid spawning balls too close to the robot's starting position (within 0.8 units)
-            if (x - spawn_x)**2 + y**2 < 0.64:
-                continue
-            # randomize ball size and physics properties
-            r = random.uniform(0.12, 0.35)
-            # make larger balls heavier 
-            col = p.createCollisionShape(p.GEOM_SPHERE, radius=r)
-            body = p.createMultiBody(r * 200, col, -1, [x, y, random.uniform(0.3, 1.5)])
+        import json
+        with open("balls.json") as f:
+            balls = json.load(f)
+        
+        for i, b in enumerate(balls):
+            col = p.createCollisionShape(p.GEOM_SPHERE, radius=b["r"])
+            body = p.createMultiBody(b["r"] * 200, col, -1, [b["x"], b["y"], b["z"]])
             p.changeDynamics(body, -1,
-                lateralFriction=0.1,
+                lateralFriction=0.4,
                 rollingFriction=0.1,
                 spinningFriction=0.1,
                 restitution=0.0,
-                linearDamping=0.1,    
+                linearDamping=0.1,
                 angularDamping=0.1)
-                
-            #every 20 balls, let settle 
             if i % 30 == 0:
-                for _ in range(40):
+                for _ in range(50):
                     p.stepSimulation()
-
-    # let balls settle before starting main simulation loop
-        for _ in range(300):
+        
+        for _ in range(350):
             p.stepSimulation()
 
     def Run(self):

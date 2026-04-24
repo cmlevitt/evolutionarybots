@@ -55,16 +55,6 @@ class ROBOT:
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 desiredAngle = (self.nn.Get_Value_Of(neuronName)* c.motorJointRange)
                 self.motors[jointName.encode()].Set_Value(self.robotId, desiredAngle)
-        # for idx, jointName in enumerate(pyrosim.jointNamesToIndices):
-        #     # set angle
-        #     angle = c.motorJointRange * np.sin(i * 0.1 + idx * 0.5)
-        #     try:
-        #         self.motors[jointName].Set_Value(self.robotId, angle)
-        #     except KeyError:
-        #         self.motors[jointName.encode()].Set_Value(self.robotId, angle)
-        #     if i % 100 == 0:
-        #         print(f"Step {i}: joint {jointName}, angle {angle:.3f}")
-                # #print(neuronName, jointName, desiredAngle)
 
     def Think(self):
         self.nn.Update()
@@ -82,13 +72,21 @@ class ROBOT:
         stall_penalty = 0.001 * self.stall_steps
 
         # penalize falling over
-        fall_penalty = 10.0 if z < 1.2 else 0.0
+        
+        if z < 1.2:
+            fall_penalty = 50.0 
+        elif z < 1.8:
+            fall_penalty = 10.0 #sinking, penalize less
+        elif z > 5.0:
+            fall_penalty = 20.0 #jump penality
+        else:            
+            fall_penalty = 0.0
 
         displacement = 2.0 - x  # positive when moving in -x from spawn at 2.0
         fitness = -displacement + stall_penalty + fall_penalty  # minimize displacement and stall, heavily penalize falling over
 
         #fitness = xCoordinateOfLinkZero + stall_penalty
-        fell = z < 1.2
+        fell = z < 1.8
 
         #trying to debug fitness values, log to file
         with open("fitness_log.txt", "a") as log:
