@@ -13,15 +13,6 @@ class SENSOR:
     def Get_Value(self, i):
         self.values[i % 1000] = np.sin(i * 0.1 + self.phase)
 
-    # def __init__(self, linkName):
-
-    #     self.linkName = linkName
-    #     self.values = np.zeros(1000)
-
-    #     #print(self.values)
-
-    # def Get_Value(self, i):
-    #     self.values[i % 1000] = np.sin(i * 0.1)
 
     def Save_Values(self):
         np.save("data/" + self.linkName + "SensorValues.npy", self.values)
