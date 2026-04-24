@@ -69,6 +69,12 @@ class ROBOT:
         #x = pos[0]
         x, y, z = pos
 
+        #penalize movement in pos x direction past spawn point
+        backwards_penalty = 0.0
+        if x > c.ar_length / 2 - 2.0:
+            backwards_penalty = 5.0 * (x - (c.ar_length / 2 - 2.0))  # penalize more the further past spawn point
+
+
         stall_penalty = 0.001 * self.stall_steps
 
         # penalize falling over
@@ -77,20 +83,25 @@ class ROBOT:
             fall_penalty = 50.0 
         elif z < 1.8:
             fall_penalty = 10.0 #sinking, penalize less
+        elif z < 3.0:
+            fall_penalty = 5.0 #slight jump, penalize less
         elif z > 5.0:
             fall_penalty = 20.0 #jump penality
         else:            
             fall_penalty = 0.0
 
-        displacement = 2.0 - x  # positive when moving in -x from spawn at 2.0
-        fitness = -displacement + stall_penalty + fall_penalty  # minimize displacement and stall, heavily penalize falling over
+        spawn_x = c.ar_length / 2 - 2.0
+        displacement = spawn_x - x  # positive when moving in -x from spawn 
+
+        fitness = -displacement + backwards_penalty + stall_penalty + fall_penalty  # fitness = distance traveled in -x direction minus penalties
 
         #fitness = xCoordinateOfLinkZero + stall_penalty
         fell = z < 1.8
+        jumped = z > 5.0
 
         #trying to debug fitness values, log to file
         with open("fitness_log.txt", "a") as log:
-            log.write(f"[{self.myID}] x={x:.2f} z={z:.2f} fell={fell} stall={self.stall_steps}\n")
+            log.write(f"[{self.myID}] fitness={fitness:.2f} x={x:.2f} z={z:.2f} fell={fell} jumped={jumped} stall={self.stall_steps}\n")
         with open("tmp" + str(self.myID) + ".txt", "w") as f:
             f.write(str(fitness))
 
