@@ -39,9 +39,7 @@ class ROBOT:
     def Sense(self, i):
         for sensor in self.sensors:
             self.sensors[sensor].Get_Value(i)
-            # if i == 100:
-            #     for sensor in self.sensors:
-            #         print(sensor, self.sensors[sensor].values[100])
+
 
     def Prepare_To_Act(self, robotId):
         self.motors = {}
@@ -62,9 +60,6 @@ class ROBOT:
    
     def Get_Fitness(self):
 
-        # stateOfLinkZero = p.getLinkState(self.robotId, 0)
-        # positionOfLinkZero = stateOfLinkZero[0]
-        # xCoordinateOfLinkZero = positionOfLinkZero[0]
         pos, _ = p.getBasePositionAndOrientation(self.robotId)
         #x = pos[0]
         x, y, z = pos
@@ -79,25 +74,26 @@ class ROBOT:
 
         # penalize falling over
         
-        if z < 1.2:
-            fall_penalty = 50.0 
-        elif z < 1.8:
-            fall_penalty = 10.0 #sinking, penalize less
-        elif z < 3.0:
-            fall_penalty = 5.0 #slight jump, penalize less
-        elif z > 5.0:
-            fall_penalty = 20.0 #jump penality
-        else:            
-            fall_penalty = 0.0
+        fall_penalty = 0.0
+        jump_penalty = 0.0
+
+        if z < 1.2: # sunk or out of arena
+            fall_penalty = 50.0
+        elif z < 1.8: # sinking or barely standing
+            fall_penalty = 10.0
+        elif z > 5.0: # big jump
+            jump_penalty = 50.0
+        elif z > 3.5: #smaller jumping
+            jump_penalty = 10.0
 
         spawn_x = c.ar_length / 2 - 2.0
         displacement = spawn_x - x  # positive when moving in -x from spawn 
 
-        fitness = -displacement + backwards_penalty + stall_penalty + fall_penalty  # fitness = distance traveled in -x direction minus penalties
+        fitness = -displacement + backwards_penalty + stall_penalty + jump_penalty + fall_penalty  # fitness = distance traveled in -x direction minus penalties
 
         #fitness = xCoordinateOfLinkZero + stall_penalty
         fell = z < 1.8
-        jumped = z > 5.0
+        jumped = z > 3.5
 
         #trying to debug fitness values, log to file
         with open("fitness_log.txt", "a") as log:
@@ -109,15 +105,5 @@ class ROBOT:
 
         os.system("del brain" + str(self.myID) + ".nndf")
 
-
-    # def Get_Fitness(self): OG!
-    #         stateOfLinkZero = p.getLinkState(self.robotId,0)
-    #         positionOfLinkZero = stateOfLinkZero[0]
-    #         xCoordinateOfLinkZero = positionOfLinkZero[0]
-    #         with open("tmp" + str(self.myID) + ".txt", "w") as f:
-    #             f.write(str(xCoordinateOfLinkZero))
-    #         os.replace("tmp"+str(self.myID)+".txt" , "fitness"+str(self.myID)+".txt")
-
-    #         os.system("del brain" + str(self.myID) + ".nndf")
 
 
