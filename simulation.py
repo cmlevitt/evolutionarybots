@@ -1,4 +1,6 @@
 
+from operator import pos
+
 from world import WORLD
 from robot import ROBOT
 import pybullet as p
@@ -67,6 +69,8 @@ class SIMULATION:
         self.robot.total_movement = 0
         self.robot.stall_steps = 0
         self.robot.prev_x = None
+        self.robot.min_z = float('inf')
+        self.robot.max_z = float('-inf')
 
         # run the main simulation loop, track movement and apply stall penalty
         for i in range(1000):
@@ -77,6 +81,9 @@ class SIMULATION:
 
             state = p.getLinkState(self.robot.robotId, 0)
             x = state[0][0]
+            pos, _ = p.getBasePositionAndOrientation(self.robot.robotId)
+            self.robot.min_z = min(self.robot.min_z, pos[2])
+            self.robot.max_z = max(self.robot.max_z, pos[2])
 
             # track total movement and stall steps for fitness penalty
             if self.robot.prev_x is None:
@@ -96,7 +103,7 @@ class SIMULATION:
                 self.robot.prev_x = x
 
             if self.directOrGUI == "GUI":
-                time.sleep(1/60) #TIME DELAY
+                time.sleep(1/240) #TIME DELAY
 
     # def Run(self):
     #     for i in range(500): #let balls fall before starting to move

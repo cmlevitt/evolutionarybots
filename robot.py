@@ -77,13 +77,13 @@ class ROBOT:
         fall_penalty = 0.0
         jump_penalty = 0.0
 
-        if z < 1.2: # sunk or out of arena
+        if self.min_z < 1.2: # sunk or out of arena
             fall_penalty = 50.0
-        elif z < 1.8: # sinking or barely standing
+        elif self.min_z < 1.8: # sinking or barely standing
             fall_penalty = 10.0
-        elif z > 5.0: # big jump
+        elif self.max_z > 5.0: # big jump
             jump_penalty = 50.0
-        elif z > 3.5: #smaller jumping
+        elif self.max_z > 3.5: #smaller jumping
             jump_penalty = 10.0
 
         spawn_x = c.ar_length / 2 - 2.0
@@ -92,12 +92,12 @@ class ROBOT:
         fitness = -displacement + backwards_penalty + stall_penalty + jump_penalty + fall_penalty  # fitness = distance traveled in -x direction minus penalties
 
         #fitness = xCoordinateOfLinkZero + stall_penalty
-        fell = z < 1.8
-        jumped = z > 3.5
+        fell = self.min_z < 1.8
+        jumped = self.max_z > 3.5
 
         #trying to debug fitness values, log to file
         with open("fitness_log.txt", "a") as log:
-            log.write(f"[{self.myID}] fitness={fitness:.2f} x={x:.2f} z={z:.2f} fell={fell} jumped={jumped} stall={self.stall_steps}\n")
+            log.write(f"[{self.myID}] fitness={fitness:.2f} x={x:.2f} min_z={self.min_z:.2f} max_z={self.max_z:.2f} fell={fell} jumped={jumped} stall={self.stall_steps}\n")
         with open("tmp" + str(self.myID) + ".txt", "w") as f:
             f.write(str(fitness))
 
