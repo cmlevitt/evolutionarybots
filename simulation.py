@@ -42,10 +42,18 @@ class SIMULATION:
         for i, b in enumerate(balls):
             col = p.createCollisionShape(p.GEOM_SPHERE, radius=b["r"])
             body = p.createMultiBody(b["r"] * 200, col, -1, [b["x"], b["y"], b["z"]])
+
+        if c.friction == "low":
+            lat, roll, spin = 0.1, 0.01, 0.01
+        elif c.friction == "medium":
+            lat, roll, spin = 0.4, 0.1, 0.1
+        elif c.friction == "high":
+            lat, roll, spin = 1.0, 0.5, 0.3
+
             p.changeDynamics(body, -1,
-                lateralFriction=0.4,
-                rollingFriction=0.1,
-                spinningFriction=0.1,
+                lateralFriction=lat,
+                rollingFriction=roll,
+                spinningFriction=spin,
                 restitution=0.0,
                 linearDamping=0.1,
                 angularDamping=0.1)

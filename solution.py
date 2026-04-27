@@ -75,7 +75,7 @@ class SOLUTION:
         pyrosim.Start_SDF("world.sdf")
         pyrosim.End()
         while not os.path.exists("world.sdf"):
-            time.sleep(0.01)
+            time.sleep(0.02)
 
     def Generate_Body(self):
         length = 1

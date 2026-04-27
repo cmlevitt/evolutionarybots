@@ -8,12 +8,12 @@ import numpy as np
 #results vary way too much bc of ball placement, so set seeds for reproducibility
 # random.seed(42)
 # np.random.seed(42)
+random.seed(42)
+np.random.seed(42)
 
 #close debug log to clear
 open("fitness_log.txt", "w").close()
 phc = parallelhillclimber.PARALELL_HILL_CLIMBER()
-random.seed(133)      # then seed for reproducible evolution
-np.random.seed(133)
 phc.Evolve()
 #time.sleep(1/60) 
 phc.Show_Best()

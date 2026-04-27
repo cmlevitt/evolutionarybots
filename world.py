@@ -18,7 +18,7 @@ class WORLD:
         # Load a sphere (position: x,y,z; orientation: quaternion)
         p.loadSDF("world.sdf")
         while not os.path.exists("world.sdf"):
-            time.sleep(0.02)
+            time.sleep(0.03)
         #spawn arena w fixed to the world
         self.arenaId = p.loadURDF("arena.urdf", useFixedBase=True)
         num_joints = p.getNumJoints(self.arenaId)

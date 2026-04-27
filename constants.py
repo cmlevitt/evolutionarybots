@@ -6,7 +6,7 @@ phaseOffset = 0
 
 #experiment size
 numberOfGenerations = 20
-populationSize = 5
+populationSize = 10
 
 #joints/neurons
 numSensorNeurons = 8
@@ -16,9 +16,13 @@ motorJointRange = pi/6
 #Arena
 ar_length=12
 ar_width=6
-ar_height=2
+ar_height=4
 wall_thickness=0.2
 floor_thickness=0.2
+
+#a/b/c
+friction = "medium"
+
 
 
 

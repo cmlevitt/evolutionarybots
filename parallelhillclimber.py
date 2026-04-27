@@ -7,6 +7,7 @@ import constants
 import copy
 import os
 import constants as c
+import numpy as np
 
 class PARALELL_HILL_CLIMBER:
     def __init__(self):
@@ -19,13 +20,16 @@ class PARALELL_HILL_CLIMBER:
             self.parents[i] = solution.SOLUTION(self.nextAvailableID)
             self.nextAvailableID += 1
         #print("parents dict: " + str(self.parents))
+        self.fitnessMatrix = np.zeros((constants.populationSize, constants.numberOfGenerations)) # for a/b
 
     def Generate_Ball_Config(self):
         import json
         import random
         import time
-        seed = int(time.time())
-        random.seed(seed)
+        # seed = int(time.time())
+        # random.seed(seed)
+        # seed = 1777144462 TRIAL 1 A/B/C
+        seed = 1777225786 #trial 2 A/B/C
         print(f"Ball seed: {seed}")  # save to reproduce the same ball configuration (if good)
         spacing = 0.28
         cols, rows = 38, 17
@@ -45,12 +49,14 @@ class PARALELL_HILL_CLIMBER:
             json.dump(balls, f)
         random.seed()# reset random seed to system time for evolution
 
-    def Evolve_For_One_Generation(self):
+    def Evolve_For_One_Generation(self, currentGeneration):
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
         self.Print()
         self.Select()
+        for key in self.parents:
+            self.fitnessMatrix[key][currentGeneration] = self.parents[key].fitness
 
     def Show_Best(self):
         #self.parents.Evaluate("GUI")
@@ -104,5 +110,7 @@ class PARALELL_HILL_CLIMBER:
             #print("fitness: "+ str(self.parents[parent].fitness))
         # self.parent.Evaluate("GUI")
         for currentGeneration in range(constants.numberOfGenerations):
-            self.Evolve_For_One_Generation()
+            self.Evolve_For_One_Generation(currentGeneration)
+        np.savetxt("fitnessMedium2.txt", self.fitnessMatrix)
+        np.save("fitnessMedium2.npy", self.fitnessMatrix)
 

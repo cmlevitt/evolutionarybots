@@ -79,7 +79,7 @@ class ROBOT:
 
         if self.min_z < 1.2: # sunk or out of arena
             fall_penalty = 50.0
-        elif self.min_z < 1.8: # sinking or barely standing
+        elif self.min_z < 1.5: # sinking or barely standing
             fall_penalty = 10.0
         elif self.max_z > 5.0: # big jump
             jump_penalty = 50.0
@@ -92,7 +92,7 @@ class ROBOT:
         fitness = -displacement + backwards_penalty + stall_penalty + jump_penalty + fall_penalty  # fitness = distance traveled in -x direction minus penalties
 
         #fitness = xCoordinateOfLinkZero + stall_penalty
-        fell = self.min_z < 1.8
+        fell = self.min_z < 1.5
         jumped = self.max_z > 3.5
 
         #trying to debug fitness values, log to file
