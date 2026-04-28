@@ -8,8 +8,8 @@ import numpy as np
 #results vary way too much bc of ball placement, so set seeds for reproducibility
 # random.seed(42)
 # np.random.seed(42)
-random.seed(42)
-np.random.seed(42)
+random.seed(133)
+np.random.seed(133)
 
 #close debug log to clear
 open("fitness_log.txt", "w").close()

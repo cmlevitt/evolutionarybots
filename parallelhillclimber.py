@@ -111,6 +111,6 @@ class PARALELL_HILL_CLIMBER:
         # self.parent.Evaluate("GUI")
         for currentGeneration in range(constants.numberOfGenerations):
             self.Evolve_For_One_Generation(currentGeneration)
-        np.savetxt("fitnessMedium2.txt", self.fitnessMatrix)
-        np.save("fitnessMedium2.npy", self.fitnessMatrix)
+        np.savetxt("finalFit_low01.txt", self.fitnessMatrix)
+        np.save("finalFit_low01.npy", self.fitnessMatrix)
 

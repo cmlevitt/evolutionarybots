@@ -5,7 +5,7 @@ frequency = 10
 phaseOffset = 0
 
 #experiment size
-numberOfGenerations = 20
+numberOfGenerations = 50
 populationSize = 10
 
 #joints/neurons
@@ -21,7 +21,7 @@ wall_thickness=0.2
 floor_thickness=0.2
 
 #a/b/c
-friction = "medium"
+friction = "low"
 
 
 
